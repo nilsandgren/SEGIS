@@ -1,0 +1,75 @@
+[ ] What about glCallLists in FreeType_Wrapper? Takes a lot of time.
+    [ ] Sliders are still slow if text rendering is disabled. Why?!?
+        -> Just too many events perhaps?
+
+[ ] The switch to GLFW
+
+    [ ] Is glfwPollEvents or glfwWaitEvents the way to go?
+
+    [ ] Reshape and display callbacks
+
+    [ ] Find all glut calls and see if they are needed, and if so if there
+        is a GLFW counterpart.
+
+    [ ] Where will the main loop be?
+        GLFW gives the control of this to the user so we can either
+        put the event loop within SEGIS, hiding it from the application,
+        or let the application have a main loop. Perhaps both ways can
+        be available? I.e. either do e.g. mainController->start() (which
+        will be blocking) or let the application have a loop.
+
+    [ ] Multiple windows
+        The current window is sent in all GLFW callbacks. This makes it
+        easier to handle multiple windows. We want it to be easy to create
+        multiple windows!
+
+        [ ] Common application data
+            With multiple windows it feels necessary to have one single place
+            to store application data.
+
+            [ ] Are different GLFWwindows run in different threads?
+                In that case we will need locks for this data structure.
+
+    [ ] GLFWwindow versus SEGIS::Window
+        The Window class in SEGIS needs to be tightly coupled with the
+        GLFWwindow object and will probably be the user data pointer
+        that can be stored in the GLFWwindow. Perhaps SEGIS::Window
+        creates the GLFWwindow and adds 'this' as user data?
+        Event sequence example:
+          * The user drags the border of the window, changing its size
+          * For each pixel the window is resized there is a call made to
+            our reshape function with the GLFWwindow as argument.
+          * The reshape callback gets the SEGIS::Window from the GLFWwindow
+            and calls its resize() function.
+
+        Worries: infinite loops...
+
+    [ ] Mouse cursors
+        With GLUT we have nice mouse cursors e.g. for grabbing and moving
+        in one particular direction. glfwCreateCursor can be used for this,
+        but requires an GLFWimage. Sounds complicated, but perhaps fun.
+        -> Check glfwCreateStandardCursor and glfwSetCursor!
+
+    [ ] Bitmaps
+        SEGIS has its own image and bitmap classes. Might be a good idea to
+        make use of what is available in GLFW instead.
+
+    [ ] Mouse event callbacks
+        There does not seem to be separate callbacks for e.g. drag and
+        passive motion. I think SEGIS needs to keep track of a mouse motion
+        is made with one ore more buttons pressed (drag) or not (passive).
+
+    [ ] Keyboard event callbacks
+
+    [ ] There is a file drop callback in GLFW!
+
+    [ ] It is possible to set and get text data from the clipboard
+        with glfwSetClipBoardString and glfwGetClipboardString.
+
+[ ] C vs C++
+
+    [ ] Use std::string more?
+
+    [ ] Wrap library in a nice namespace?
+
+    [ ] Do we need to use smart pointers?

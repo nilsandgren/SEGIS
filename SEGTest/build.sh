@@ -1,0 +1,14 @@
+g++ -std=c++11 -g -o bigtest BigTest.cpp \
+        -I../libSEGIS/include/ \
+        -I/usr/include/freetype2/ \
+        -I/usr/include/boost \
+        -I/usr/include/libdrm \
+        -L../libSEGIS/ \
+        -lSEGIS \
+        -lglut \
+        -lGL \
+        -lGLU \
+        -lboost_system \
+        -lboost_filesystem \
+        -lfreetype \
+        -lfreeimage
